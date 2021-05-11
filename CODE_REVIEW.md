@@ -10,5 +10,5 @@ Lighthouse extension issues:
 
 My errors discoverded 
 - The book cards has no border-radius just a a change of color without ratio 
-- The reading list close button is better the icon without the contrast
+- No separation between elements in reading list
 - The "Want to read" text button should change when book is already in the list
