@@ -31,13 +31,19 @@
           </div>
           <p [innerHTML]="b.description"></p>
           <div>
-            <button
+            <button *ngIf="!b.isAdded"
               mat-flat-button
               color="primary"
               (click)="addBookToReadingList(b)"
-              [disabled]="b.isAdded"
             >
               Want to Read
+            </button>
+            <button *ngIf="b.isAdded"
+              mat-flat-button
+              color="primary"
+              [disabled]="b.isAdded"
+            >
+              On reading list
             </button>
           </div>
         </div>

@@ -38,7 +38,8 @@ const booksReducer = createReducer(
   ),
   on(BooksActions.searchBooksFailure, (state, { error }) => ({
     ...state,
-    error
+    loaded: false,
+    error: error
   })),
   on(BooksActions.clearSearch, state => booksAdapter.removeAll(state))
 );
