@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
+
 import {
   addToReadingList,
   clearSearch,
@@ -9,6 +10,7 @@ import {
 } from '@tmo/books/data-access';
 import { FormBuilder } from '@angular/forms';
 import { Book } from '@tmo/shared/models';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'tmo-book-search',
@@ -16,15 +18,16 @@ import { Book } from '@tmo/shared/models';
   styleUrls: ['./book-search.component.scss']
 })
 export class BookSearchComponent implements OnInit {
+  subscription: Subscription
   books: ReadingListBook[];
-
   searchForm = this.fb.group({
     term: ''
   });
-
+  allowsearch = true;
+  
   constructor(
     private readonly store: Store,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
   ) {}
 
   get searchTerm(): string {
@@ -47,14 +50,18 @@ export class BookSearchComponent implements OnInit {
     this.store.dispatch(addToReadingList({ book }));
   }
 
-  searchExample() {
+  /*searchExample() {
     this.searchForm.controls.term.setValue('javascript');
     this.searchBooks();
-  }
+  }*/
 
-  searchBooks() {
-    if (this.searchForm.value.term) {
-      this.store.dispatch(searchBooks({ term: this.searchTerm }));
+  searchBooks(event: any) {
+    if(event.target.value && this.allowsearch){
+      this.store.dispatch(searchBooks({ term: event.target.value }));
+      this.allowsearch = false;
+      setTimeout(() => {
+        this.allowsearch = true;
+      }, 500);
     } else {
       this.store.dispatch(clearSearch());
     }
