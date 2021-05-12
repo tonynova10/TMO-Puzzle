@@ -12,3 +12,19 @@ describe('When: I use the reading list feature', () => {
     );
   });
 });
+
+describe('When I undo book addition to my reading list', () => {
+
+  it('Then: I should not see anything in my reading list', () => {
+    cy.get('[data-testing="reading-list-container"]').should('be.empty');
+  });
+  
+});
+
+describe('When I undo book removal to my reading list', () => {
+
+  it('Then: I should see my reading list', () => {
+    cy.get('[data-testing="reading-list-container"]').should('contain.text');
+  })
+  
+});
