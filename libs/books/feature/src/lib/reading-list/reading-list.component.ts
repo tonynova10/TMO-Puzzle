@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { addToReadingList, getReadingList, removeFromReadingList } from '@tmo/books/data-access';
+import { addToReadingList, getReadingList, markAsRead, markBookAsRead, removeBookAsRead, removeFromReadingList } from '@tmo/books/data-access';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Book } from '@tmo/shared/models';
+import { Book, ReadingListItem } from '@tmo/shared/models';
 
 @Component({
   selector: 'tmo-reading-list',
@@ -17,17 +17,26 @@ export class ReadingListComponent {
     private _snackBar: MatSnackBar
     ) {}
 
-  removeFromReadingList(item) {
-    
-    const book = {
-      id: item.bookId,
-      authors: item.authors,
-      description: item.description,
-      title: item.title,
-      coverUrl: item.coverUrl,
-      publisher: item.publisher
-    } as Book
+  removeFromReadingList(readingItem) {
+    let item: any;
+    let book = this.createBook(readingItem)
 
+    if(readingItem.finished) {
+      item = {
+        ...readingItem,
+        finished: false,
+        finishedDate: null
+      };
+      book = {
+        ...book,
+        finished: false
+      }
+      this.store.dispatch(removeBookAsRead({ book }));
+    } else {
+      item = {
+        ...readingItem
+      };
+    }
     
     const message = 'Book removed to reading list!';
     const action = 'Undo';
@@ -38,6 +47,30 @@ export class ReadingListComponent {
     snackBarRef.onAction().subscribe(() => {
       this.store.dispatch(addToReadingList({ book }));
       snackBarRef.dismiss();
-    })
+    });
+  }
+  
+  markedAsRead(readingItem: ReadingListItem){
+    const finishedDate = new Date().toISOString();
+    const book = this.createBook(readingItem);
+    book.finished = true;
+    const item = {
+      ...readingItem,
+      finished: true,
+      finishedDate: finishedDate
+    } as ReadingListItem;
+    this.store.dispatch(markAsRead({ item }));
+    this.store.dispatch(markBookAsRead({ book }));
+  }
+
+  createBook(readingItem){
+    return {
+      id: readingItem.bookId,
+      authors: readingItem.authors,
+      description: readingItem.description,
+      title: readingItem.title,
+      coverUrl: readingItem.coverUrl,
+      publisher: readingItem.publisher
+    } as Book;
   }
 }
