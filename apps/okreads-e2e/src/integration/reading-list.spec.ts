@@ -28,3 +28,9 @@ describe('When I undo book removal to my reading list', () => {
   })
   
 });
+
+describe('When I mark a book as read', () => {
+  it('Then: finished date should appear', () => {
+    cy.get('[data-testing="finished-date"]').should('be.visible');
+  })
+});

@@ -16,4 +16,34 @@ export const searchBooksFailure = createAction(
   props<{ error: any }>()
 );
 
+export const markBookAsRead = createAction(
+  '[Book Search API] Book as read',
+  props<{ book: Book }>()
+);
+
+export const markBookAsReadSuccess = createAction(
+  '[Book Search API] Book as read success',
+  props<{ book: Book }>()
+);
+
+export const markBookAsReadFailure = createAction(
+  '[Book Search API] Book as read failure',
+  props<{ error: any }>()
+);
+
+export const removeBookAsRead = createAction(
+  '[Book Search API] Book as unread',
+  props<{ book: Book }>()
+);
+
+export const removeBookAsReadSuccess = createAction(
+  '[Book Search API] Book as read success',
+  props<{ book: Book }>()
+);
+
+export const removeBookAsReadFailure = createAction(
+  '[Book Search API] Book as read failure',
+  props<{ error: any }>()
+);
+
 export const clearSearch = createAction('[Books Search Bar] Clear Search');

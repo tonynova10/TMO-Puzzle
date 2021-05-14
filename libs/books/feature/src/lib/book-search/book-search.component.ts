@@ -6,6 +6,7 @@ import {
   addToReadingList,
   clearSearch,
   getAllBooks,
+  getReadingList,
   ReadingListBook,
   removeFromReadingList,
   searchBooks,
@@ -19,7 +20,8 @@ import { Book, ReadingListItem } from '@tmo/shared/models';
   styleUrls: ['./book-search.component.scss']
 })
 export class BookSearchComponent implements OnInit {
-  books: ReadingListBook[];
+  books: any;
+  readingList$ = this.store.select(getReadingList);;
   searchForm = this.fb.group({
     term: ''
   });
